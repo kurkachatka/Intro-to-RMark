@@ -65,6 +65,34 @@ aa.results$Phi.colony.p.time$results$beta
 aa.results$Phi.colony.p.time$results$real
 
 
+# VISUALISATION
+
+
+for_plots <- aa.results$Phi.colony.p.time$results$real
+
+Phi_estimates <- for_plots[1:2,] %>% mutate(colony = c('Good', 'Poor'))
+p_estimates <- for_plots[3:9,] %>% mutate(time = seq(1:7))
+
+
+Phi_estimates %>% ggplot(aes(y = estimate, x = colony)) +
+  geom_errorbar(aes(ymin = lcl, ymax = ucl), size = 2, width = 0.2) +
+  geom_point(size = 10) +
+  theme_classic() +
+  labs(y = 'Apparent survival')
+
+
+
+p_estimates %>% ggplot(aes(y = estimate, x = time)) +
+  geom_errorbar(aes(ymin = lcl, ymax = ucl), size = 2, width = 0.2) +
+  geom_point(size = 10) +
+  geom_line(size = 2) +
+  theme_classic() +
+  labs(y = 'Encounter probability')
+
+
+
+
+
 
 
 
