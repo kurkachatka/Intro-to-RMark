@@ -91,6 +91,72 @@ p_estimates %>% ggplot(aes(y = estimate, x = time)) +
 
 
 
+# =======================LYSMA Model===================================
+
+
+# LYSMA models are not implemented in RMark (although they are in MARK)
+# a work around is to turn LYSMA data structure into CJS data structure
+
+# function:
+
+lysma_to_cjs <- function(data, ch_col = "ch") {
+  result_list <- list()
+  uid <- 1  # Unique ID counter for each chick
+  
+  for (i in seq_len(nrow(data))) {
+    ch <- as.character(data[[ch_col]][i])
+    counts <- as.numeric(substring(ch, seq(1, nchar(ch), 2), seq(2, nchar(ch), 2)))
+    if (counts[1] == 0) next
+    
+    max_chicks <- counts[1]
+    chick_matrix <- matrix(0, nrow = max_chicks, ncol = length(counts))
+    
+    # Generate encounter histories by assumed disappearance
+    for (j in 1:max_chicks) {
+      visible <- which(counts >= j)
+      chick_matrix[j, visible] <- 1
+    }
+    
+    ch_rows <- apply(chick_matrix, 1, paste0, collapse = "")
+    
+    # Repeat covariates for each chick
+    covariate_rows <- data[rep(i, max_chicks), , drop = FALSE]
+    covariate_rows$ch <- ch_rows
+    covariate_rows$freq <- 1
+    covariate_rows$uid <- seq(uid, uid + max_chicks - 1)
+    uid <- uid + max_chicks
+    
+    result_list[[i]] <- covariate_rows
+  }
+  
+  result <- do.call(rbind, result_list)
+  return(result)
+}
+
+
+
+dummy_data <- data.frame(
+  ch = c("03020100", "04040302"),
+  Distance = c(123.4, 567.8),
+  Habitat = c("urban", "rural")
+)
+
+cjs_dummy_data <- lysma_to_cjs(dummy_data)
+
+str(cjs_dummy_data)
+
+cjs_dummy_data <- as.
+
+# now actual models
+
+
+
+dd.process <- process.data(cjs_dummy_data, model="CJS", groups= "Habitat")
+
+# make a DDL - designe data list (short: design data)
+
+aa.ddl <- make.design.data(aa.process)
+
 
 
 
