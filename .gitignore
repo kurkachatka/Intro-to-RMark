@@ -1,6 +1,6 @@
-.out
-.res
-.vcv
+*.out
+*.res
+*.vcv
 .Rproj.user
 .Rhistory
 .RData

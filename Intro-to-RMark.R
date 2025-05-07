@@ -101,7 +101,7 @@ p_estimates %>% ggplot(aes(y = estimate, x = time)) +
 
 lysma_to_cjs <- function(data, ch_col = "ch") {
   result_list <- list()
-  uid <- 1  # Unique ID counter for each chick
+  uid <- 1  # unique ID counter for each chick
   
   for (i in seq_len(nrow(data))) {
     ch <- as.character(data[[ch_col]][i])
@@ -111,7 +111,7 @@ lysma_to_cjs <- function(data, ch_col = "ch") {
     max_chicks <- counts[1]
     chick_matrix <- matrix(0, nrow = max_chicks, ncol = length(counts))
     
-    # Generate encounter histories by assumed disappearance
+    # generate encounter histories by assumed disappearance
     for (j in 1:max_chicks) {
       visible <- which(counts >= j)
       chick_matrix[j, visible] <- 1
@@ -119,7 +119,7 @@ lysma_to_cjs <- function(data, ch_col = "ch") {
     
     ch_rows <- apply(chick_matrix, 1, paste0, collapse = "")
     
-    # Repeat covariates for each chick
+    # repeat covariates for each chick
     covariate_rows <- data[rep(i, max_chicks), , drop = FALSE]
     covariate_rows$ch <- ch_rows
     covariate_rows$freq <- 1
@@ -186,13 +186,14 @@ dd.results <- dd.models()
 dd.results
 
 
+dd.results$Phi.dist.p.dot$results$beta # since Distance is a continuous variable
+# beta estimates are more informative
+
+
+dd.results$Phi.hab.p.dot$results$real # real estimates for the between-group differences 
 
 
 
-
-
-
-
-
-
+# visualizing continuous data is a bit tricky
+# estimates need to be simulated - FOR LATER
 
