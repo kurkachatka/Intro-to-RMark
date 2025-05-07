@@ -51,10 +51,24 @@ aa.models <-  function()
 
 
 
-
-
 aa.results <- aa.models() # run the model
 
-aa.results # see the ranking of models
+aa.results # see the ranking list of models
+
+# get the top ranking model beta estimates
+
+aa.results$Phi.colony.p.time$results$beta
+
+
+# get the top ranking model actual estimates
+
+aa.results$Phi.colony.p.time$results$real
+
+
+
+
+
+
+
 
 
