@@ -134,6 +134,7 @@ lysma_to_cjs <- function(data, ch_col = "ch") {
 }
 
 
+# Dummy data for example
 
 dummy_data <- data.frame(
   ch = c("03020100", "04040302"),
@@ -141,21 +142,50 @@ dummy_data <- data.frame(
   Habitat = c("urban", "rural")
 )
 
+# use the function to convert lysma to cjs
+
 cjs_dummy_data <- lysma_to_cjs(dummy_data)
 
-str(cjs_dummy_data)
+str(cjs_dummy_data) #check for structure
 
-cjs_dummy_data <- as.
+cjs_dummy_data$Habitat <- as.factor(cjs_dummy_data$Habitat) # grouping variables need to be factors
+
 
 # now actual models
 
-
+# process data and make DDL
 
 dd.process <- process.data(cjs_dummy_data, model="CJS", groups= "Habitat")
 
-# make a DDL - designe data list (short: design data)
+dd.ddl <- make.design.data(dd.process)
 
-aa.ddl <- make.design.data(aa.process)
+
+# set models of interest
+
+dd.models <- function()
+{
+  # models for Phi
+  Phi.const <- list(formula = ~1)
+  Phi.hab <- list(formula = ~Habitat)
+  Phi.dist <- list(formula= ~Distance)
+  
+  
+  #models for p
+  p.dot <- list(formula = ~1)
+  
+  
+  cml <- create.model.list("CJS")
+  results <- mark.wrapper(cml, data = dd.process,
+                       ddl = dd.ddl, adjust = FALSE)
+  return(results)
+}
+
+
+dd.results <- dd.models()
+
+dd.results
+
+
 
 
 
