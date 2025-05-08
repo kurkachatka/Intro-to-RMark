@@ -31,13 +31,13 @@ aa.models <-  function()
   # there is a difference between time and Time, the later checks for trend in the survival variation
   
   Phi.colony <- list(formula = ~colony) # using grouping factor as variable to influence apparent survival
-  Phi.colony.time <- list(formula = ~time*colony) # checking for effect of intereaction + additive effect
+  Phi.colony.time <- list(formula = ~time*colony) # checking for effect of interaction + additive effect
   # to check just for the effect interaction ':' works
   
   
-  # models for p (encounter probablity)
+  # models for p (encounter probability)
   
-  p.dot <- list(formula = ~1) # contant
+  p.dot <- list(formula = ~1) # constant
   p.time <- list(formula = ~time) # time dependent
   
   
