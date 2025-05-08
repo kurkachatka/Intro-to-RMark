@@ -7,20 +7,20 @@ library(tidyverse)
 
 aa <- convert.inp("aa",group.df=data.frame(colony=c("Poor","Good")))
 
-# note the structure of the data, you always require ch - history and freq - freqency of each individual history
-# colony is a variable added in the dataset
+# note the structure of the data, you always require ch - history and freq - frequency of each individual history
+# colony is a variable added in the data set
 
 
 # create processed data
 
 aa.process <- process.data(aa, model="CJS", groups="colony")
 
-# make a DDL - designe data list (short: design data)
+# make a DDL - design data list (short: design data)
 
 aa.ddl <- make.design.data(aa.process)
 
 
-# create the fucntion with models of interest
+# create the function with models of interest
 # components of the model Phi and p will be combined with each other
 
 aa.models <-  function()
