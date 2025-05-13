@@ -90,6 +90,60 @@ p_estimates %>% ggplot(aes(y = estimate, x = time)) +
   labs(y = 'Encounter probability')
 
 
+# a more functional approach would be to extract the components
+# from the row names in the real estimates data frame
+# a function for that:
+
+
+extract_from_row_names <- function(df) {
+  # split the row names by space
+  split <- strsplit(rownames(df), " ")
+  
+  # combine into a data frame
+  split_df <- as.data.frame(do.call(rbind, split), stringsAsFactors = FALSE)
+  
+  # name columns
+  colnames(split_df) <- paste0("par", seq_len(ncol(split_df)))
+  
+  
+  # combine with the original data frame
+  df_fin <- cbind(df, split_df)
+  
+  return(df_fin)
+}
+
+
+
+
+for_plots_full <- extract_from_row_names(for_plots) %>%  # use the function
+  rename(Parameter = par1, Colony = par2, time = par5) %>% # rename the columns if you want
+  select(-par3, -par4, - fixed, - note) %>% # remove unused columns
+  mutate(time = sub("^t", "", time), # remove the small letters from the varaibles
+         Colony = sub("^g", "", Colony))
+
+
+
+for_plots_full %>% filter(Parameter == 'Phi') %>% 
+  ggplot(aes(y = estimate, x = Colony)) +
+  geom_errorbar(aes(ymin = lcl, ymax = ucl), size = 2, width = 0.2) +
+  geom_point(size = 10) +
+  theme_classic() +
+  labs(y = 'Apparent survival')
+
+
+
+for_plots_full %>% filter(Parameter == 'p') %>%
+  ggplot(aes(y = estimate,
+             x = as.numeric(time))) + # otherwise the line will not join the points
+  geom_errorbar(aes(ymin = lcl, ymax = ucl), size = 2, width = 0.2) +
+  geom_point(size = 10) +
+  geom_line(size = 2) +
+  theme_classic() +
+  labs(y = 'Encounter probability')
+
+
+
+
 
 # =======================LYSMA Model===================================
 
@@ -196,4 +250,8 @@ dd.results$Phi.hab.p.dot$results$real # real estimates for the between-group dif
 
 # visualizing continuous data is a bit tricky
 # estimates need to be simulated - FOR LATER
+
+
+
+
 
