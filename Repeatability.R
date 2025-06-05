@@ -75,5 +75,35 @@ plot(rpt_pos)
 # behavior, although it is moderate. 
 
 
+rpt_neg <- rpt(neg_vs_others ~ (1 | ID),
+               grname = "ID",
+               data = feeding,
+               datatype = "Binary",
+               nboot = 500,  # I changed it so it's a bit faster
+               npermut = 500) # same here
+
+rpt_neg
+
+
+#looking at the results the repeatability is stil there,
+# but it is weaker than in the case of positive
+
+plot(rpt_neg)
+
+
+
+rpt_neu <- rpt(neu_vs_others ~ (1 | ID),
+               grname = "ID",
+               data = feeding,
+               datatype = "Binary",
+               nboot = 500,  # I changed it so it's a bit faster
+               npermut = 500) # same here
+
+rpt_neu
+
+plot(rpt_neu)
+
+
+# similar with neutral vs. other - significant repeatability, but not very strong.
 
 
