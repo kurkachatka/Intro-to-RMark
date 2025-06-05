@@ -38,3 +38,42 @@ feeding <- data.frame(ID = ID, response = response)
 # pos vs. combined neg + neu
 # neg vs. combined pos + neu
 # neu vs. combined pos + neg
+
+
+# 3 binary varables TRUE/FALSE for each category
+
+feeding$pos_vs_others <- feeding$response == "pos"
+feeding$neg_vs_others <- feeding$response == "neg"
+feeding$neu_vs_others <- feeding$response == "neu"
+
+
+# Repeatability analysis
+
+rpt_pos <- rpt(pos_vs_others ~ (1 | ID),
+               grname = "ID",
+               data = feeding,
+               datatype = "Binary",
+               nboot = 1000,  #number of bootstraps, can be changed if it takes to long to count
+               npermut = 1000) #number of permutations for p, can be changed if it takes too long
+
+rpt_pos
+
+plot(rpt_pos)
+
+# look at the Original-scale approx
+# R- measure of variation in data due to consistent differences
+# 0 - random ;1 - fully repetitive
+# here R = 0.16 meaning 16% of the variation is due to repeatability  of individuals
+
+# p - statistical significance
+#one is based on likelihood ratio test, the other on the permutation,
+# I like the permutation one better, but in general they should be
+# consistent in meaning
+
+# p = 0.001 - repeatability is statistically different from zero
+# Meaning there is a statistically significant consistency in positive
+# behavior, although it is moderate. 
+
+
+
+
